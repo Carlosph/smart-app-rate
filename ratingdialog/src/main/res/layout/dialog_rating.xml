@@ -73,6 +73,17 @@
             android:textColorHint="@color/grey_400"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/dialog_rating_on_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:textColorHint="@color/black"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/dialog_rating_feedback_buttons"
             android:layout_width="match_parent"
@@ -95,6 +106,39 @@
 
             <TextView
                 android:id="@+id/dialog_rating_button_feedback_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_rate_on_play_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_rating_on_play"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/dialog_rate_button_negative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="15dp"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/dialog_rate_button_positive"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
