@@ -39,11 +39,11 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
 
     private Context context;
     private Builder builder;
-    private TextView tvTitle, tvNegative, tvPositive, tvFeedback, tvSubmit, tvCancel;
+    private TextView tvTitle, tvNegative, tvPositive, tvFeedback, tvSubmit, tvCancel, tvRatePositive, tvRateNegative, tvRateText;
     private RatingBar ratingBar;
     private ImageView ivIcon;
     private EditText etFeedback;
-    private LinearLayout ratingButtons, feedbackButtons;
+    private LinearLayout ratingButtons, feedbackButtons, rateOnPlayButtons;
 
     private float threshold;
     private int session;
@@ -77,6 +77,10 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         etFeedback = (EditText) findViewById(R.id.dialog_rating_feedback);
         ratingButtons = (LinearLayout) findViewById(R.id.dialog_rating_buttons);
         feedbackButtons = (LinearLayout) findViewById(R.id.dialog_rating_feedback_buttons);
+        rateOnPlayButtons = (LinearLayout) findViewById(R.id.dialog_rate_on_play_buttons);
+        tvRatePositive = (TextView) findViewById(R.id.dialog_rate_button_positive);
+        tvRateNegative = (TextView) findViewById(R.id.dialog_rate_button_negative);
+        tvRateText = (TextView) findViewById(R.id.dialog_rating_on_play);
 
         init();
     }
@@ -92,6 +96,10 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         tvCancel.setText(builder.cancelText);
         etFeedback.setHint(builder.feedbackFormHint);
 
+        tvRatePositive.setText(builder.ratePositiveText);
+        tvRateNegative.setText(builder.rateNegativeText);
+        tvRateText.setText(builder.rateText);
+
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.colorAccent, typedValue, true);
         int color = typedValue.data;
@@ -104,6 +112,9 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         tvSubmit.setTextColor(builder.positiveTextColor != 0 ? ContextCompat.getColor(context, builder.positiveTextColor) : color);
         tvCancel.setTextColor(builder.negativeTextColor != 0 ? ContextCompat.getColor(context, builder.negativeTextColor) : ContextCompat.getColor(context, R.color.grey_500));
 
+        tvRatePositive.setTextColor(builder.positiveTextColor != 0 ? ContextCompat.getColor(context, builder.positiveTextColor) : color);
+        tvRateNegative.setTextColor(builder.negativeTextColor != 0 ? ContextCompat.getColor(context, builder.negativeTextColor) : ContextCompat.getColor(context, R.color.grey_500));
+
         if (builder.feedBackTextColor != 0) {
             etFeedback.setTextColor(ContextCompat.getColor(context, builder.feedBackTextColor));
         }
@@ -111,11 +122,13 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         if (builder.positiveBackgroundColor != 0) {
             tvPositive.setBackgroundResource(builder.positiveBackgroundColor);
             tvSubmit.setBackgroundResource(builder.positiveBackgroundColor);
+            tvRatePositive.setBackgroundResource(builder.positiveBackgroundColor);
 
         }
         if (builder.negativeBackgroundColor != 0) {
             tvNegative.setBackgroundResource(builder.negativeBackgroundColor);
             tvCancel.setBackgroundResource(builder.negativeBackgroundColor);
+            tvRateNegative.setBackgroundResource(builder.negativeBackgroundColor);
         }
 
         if (builder.ratingBarColor != 0) {
@@ -138,6 +151,8 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         tvNegative.setOnClickListener(this);
         tvSubmit.setOnClickListener(this);
         tvCancel.setOnClickListener(this);
+        tvRatePositive.setOnClickListener(this);
+        tvRateNegative.setOnClickListener(this);
 
         if (session == 1) {
             tvNegative.setVisibility(View.GONE);
@@ -177,6 +192,12 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
 
             dismiss();
 
+        } else if (view.getId() == R.id.dialog_rate_button_positive) {
+            openPlaystore(context);
+            dismiss();
+        } else if (view.getId() == R.id.dialog_rate_button_negative) {
+
+            dismiss();
         }
 
     }
@@ -212,8 +233,7 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         builder.ratingThresholdClearedListener = new Builder.RatingThresholdClearedListener() {
             @Override
             public void onThresholdCleared(RatingDialog ratingDialog, float rating, boolean thresholdCleared) {
-                openPlaystore(context);
-                dismiss();
+            openRateOnPlay();
             }
         };
     }
@@ -231,6 +251,15 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         tvFeedback.setVisibility(View.VISIBLE);
         etFeedback.setVisibility(View.VISIBLE);
         feedbackButtons.setVisibility(View.VISIBLE);
+        ratingButtons.setVisibility(View.GONE);
+        ivIcon.setVisibility(View.GONE);
+        tvTitle.setVisibility(View.GONE);
+        ratingBar.setVisibility(View.GONE);
+    }
+
+    private void openRateOnPlay() {
+        tvRateText.setVisibility(View.VISIBLE);
+        rateOnPlayButtons.setVisibility(View.VISIBLE);
         ratingButtons.setVisibility(View.GONE);
         ivIcon.setVisibility(View.GONE);
         tvTitle.setVisibility(View.GONE);
@@ -303,18 +332,18 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         if (session == count) {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, 1);
-            editor.commit();
+            editor.apply();
             return true;
         } else if (session > count) {
             count++;
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, count);
-            editor.commit();
+            editor.apply();
             return false;
         } else {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, 2);
-            editor.commit();
+            editor.apply();
             return false;
         }
     }
@@ -323,7 +352,7 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         sharedpreferences = context.getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putBoolean(SHOW_NEVER, true);
-        editor.commit();
+        editor.apply();
     }
 
     public static class Builder {
@@ -331,6 +360,7 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         private final Context context;
         private String title, positiveText, negativeText;
         private String formTitle, submitText, cancelText, feedbackFormHint;
+        private String rateText, ratePositiveText, rateNegativeText;
         private int positiveTextColor, negativeTextColor, titleTextColor, ratingBarColor, feedBackTextColor;
         private int positiveBackgroundColor, negativeBackgroundColor;
         private RatingThresholdClearedListener ratingThresholdClearedListener;
@@ -371,6 +401,9 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
             submitText = context.getString(R.string.rating_dialog_submit);
             cancelText = context.getString(R.string.rating_dialog_cancel);
             feedbackFormHint = context.getString(R.string.rating_dialog_suggestions);
+            rateText = context.getString(R.string.rating_dialog_rate_on_play_text);
+            ratePositiveText = context.getString(R.string.rating_dialog_rate_on_play_positive_button);
+            rateNegativeText = context.getString(R.string.rating_dialog_rate_on_play_negative_button);
         }
 
         public Builder session(int session) {
@@ -480,6 +513,21 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
 
         public Builder feedbackTextColor(int feedBackTextColor) {
             this.feedBackTextColor = feedBackTextColor;
+            return this;
+        }
+
+        public Builder rateText(String rateText) {
+            this.rateText = rateText;
+            return this;
+        }
+
+        public Builder rateButtonText(String rateButtonText) {
+            this.ratePositiveText = rateButtonText;
+            return this;
+        }
+
+        public Builder rateCancelText(String rateCancelText) {
+            this.rateNegativeText = rateCancelText;
             return this;
         }
 
