@@ -303,18 +303,18 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         if (session == count) {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, 1);
-            editor.commit();
+            editor.apply();
             return true;
         } else if (session > count) {
             count++;
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, count);
-            editor.commit();
+            editor.apply();
             return false;
         } else {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(SESSION_COUNT, 2);
-            editor.commit();
+            editor.apply();
             return false;
         }
     }
@@ -323,7 +323,7 @@ public class RatingDialog extends AppCompatDialog implements RatingBar.OnRatingB
         sharedpreferences = context.getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putBoolean(SHOW_NEVER, true);
-        editor.commit();
+        editor.apply();
     }
 
     public static class Builder {
