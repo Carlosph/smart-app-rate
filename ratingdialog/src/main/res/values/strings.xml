@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Rating Dialog</string>
     <string name="rating_dialog_experience">How was your experience with us?</string>
     <string name="rating_dialog_maybe_later">Maybe later</string>
     <string name="rating_dialog_never">Never</string>
@@ -9,5 +8,5 @@
     <string name="rating_dialog_suggestions">Please let us know what went wrong and we\'ll work on it!</string>
     <string name="rating_dialog_rate_on_play_positive_button">Sure!</string>
     <string name="rating_dialog_rate_on_play_negative_button">Not now</string>
-    <string name="rating_dialog_rate_on_play_text">Thanks. Would you help us posting your review on Google Play?</string>
+    <string name="rating_dialog_rate_on_play_text">Thanks. Would you help us rating the app on Google Play?</string>
 </resources>

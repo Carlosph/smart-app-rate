@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rating_dialog_experience">¿Como valoras tu experiencia con la aplicacion?</string>
+    <string name="rating_dialog_maybe_later">En otro momento</string>
+    <string name="rating_dialog_never">Nunca</string>
+    <string name="rating_dialog_feedback_title">Ayudanos a mejorar</string>
+    <string name="rating_dialog_submit">Enviar</string>
+    <string name="rating_dialog_cancel">Cancelar</string>
+    <string name="rating_dialog_suggestions">Cuentanos que ha ido mal para que trabajemos en mejorarlo.</string>
+    <string name="rating_dialog_rate_on_play_positive_button">Claro!</string>
+    <string name="rating_dialog_rate_on_play_negative_button">Ahora no</string>
+    <string name="rating_dialog_rate_on_play_text">Gracias! ¿Nos ayudas dejando una valoración en Google Play?</string>
+</resources>
